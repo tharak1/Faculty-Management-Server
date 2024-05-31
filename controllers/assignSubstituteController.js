@@ -36,7 +36,7 @@ const SearchForSubstitute = asyncHandler(async(req,res)=>{
   const {StartTime,EndTime} = req.body;
   console.log(StartTime,EndTime);
 
-  const facultyTimetables = await facultyTimeTableModel.find();
+  const facultyTimetables = await facultyTimeTableModel.find({FacultyDepartment:filter.FacultyDepartment});
   const kaliFellows = [];
 
   for(const timetable of facultyTimetables){
