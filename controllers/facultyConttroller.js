@@ -53,20 +53,29 @@ const loginFaculty = asyncHandler(async (req,res) =>{
         res.status(400).json({error:"all fields are manditory"});
     }
     const user = await Faculty.findOne({UserName});    
-    if(user && (user.Password===Password)){
+    
+    if(user){
+        if(user.Password===Password){
             const accessToken = jwt.sign(
                 {
                     user : {
                         id : user.FacultyId,
                     }
-                },
+                }, 
                 process.env.ACCESS_TOKEN_SECERT,
             );
-            res.json({token:accessToken});
+            res.status(200).json({token:accessToken});
+        }
+        else{
+            res.status(215).json({error:"Username or password dont match"});
+            console.log("Username or password dont match");
+
+        }
     }else{
-        res.status(400).json({error:"user not found or roolno or password dont match"});
+        res.status(215).json({error:"Faculty not found"});
+        console.log("Faculty not found");
+
     }
-    
 });
 
 const getFacultyData = asyncHandler(async(req,res)=>{
